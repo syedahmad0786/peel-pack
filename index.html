@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peel Pack</title>
+    <meta name="description" content="Scratch cards and peel stickers that reveal bad advice." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <p class="kicker">FT–009 · tactile dopamine</p>
+      <h1>Peel Pack</h1>
+      <p>Scratch the foil. Peel the stickers. Receive advice nobody asked for.</p>
+    </header>
+    <section class="scratch-wrap">
+      <p class="label">Today's scratch-off</p>
+      <div class="ticket">
+        <div class="prize" id="prize"></div>
+        <canvas id="foil" width="640" height="320"></canvas>
+      </div>
+      <button type="button" id="new-card">Another card</button>
+    </section>
+    <section>
+      <p class="label">Sticker sheet — peel them</p>
+      <div class="sheet" id="sheet"></div>
+    </section>
+    <footer class="webring">
+      <a href="https://fun-toys.vercel.app">a Fun Toy</a>
+      ·
+      <a href="https://mild-inconvenience.vercel.app">prev</a>
+      <a href="https://still-here.vercel.app">next</a>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
