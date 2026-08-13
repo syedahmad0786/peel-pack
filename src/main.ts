@@ -1,10 +1,12 @@
 import "./style.css";
+import { animate } from "motion";
 import { advice, coupons, dailyIndex } from "./bank";
+import { bindTilt, reducedMotion } from "./studio";
 
 const prize = document.querySelector("#prize")!;
 const canvas = document.querySelector<HTMLCanvasElement>("#foil")!;
 const ctx = canvas.getContext("2d")!;
-const sheet = document.querySelector("#sheet")!;
+const sheet = document.querySelector<HTMLElement>("#sheet")!;
 
 function sizeCanvas() {
   const r = canvas.getBoundingClientRect();
@@ -18,12 +20,20 @@ function foil() {
   const w = canvas.width / devicePixelRatio;
   const h = canvas.height / devicePixelRatio;
   const g = ctx.createLinearGradient(0, 0, w, h);
-  g.addColorStop(0, "#c0c7d1");
-  g.addColorStop(0.5, "#f4f7fb");
-  g.addColorStop(1, "#9aa3b2");
+  g.addColorStop(0, "#8fd4ff");
+  g.addColorStop(0.22, "#f7f3ff");
+  g.addColorStop(0.48, "#ffd1ec");
+  g.addColorStop(0.72, "#ffe566");
+  g.addColorStop(1, "#9aa8c7");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = "#5c6573";
+  ctx.globalAlpha = 0.28;
+  for (let x = -h; x < w + h; x += 18) {
+    ctx.fillStyle = x % 36 === 0 ? "#fff" : "#c0c7d1";
+    ctx.fillRect(x, 0, 8, h);
+  }
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = "#3b4258";
   ctx.font = "700 18px Fredoka, sans-serif";
   ctx.textAlign = "center";
   ctx.fillText("SCRATCH ME", w / 2, h / 2);
@@ -97,4 +107,16 @@ for (let i = 0; i < 8; i++) {
     }, 700);
   });
   sheet.append(el);
+}
+
+const ticket = document.querySelector<HTMLElement>("#ticket");
+const ticketStage = document.querySelector<HTMLElement>(".ticket-stage");
+bindTilt(ticket, 9, 14);
+bindTilt(sheet, 6, 10);
+
+if (!reducedMotion()) {
+  if (ticketStage) {
+    void animate(ticketStage, { opacity: [0, 1], transform: ["translateY(20px)", "translateY(0px)"] }, { duration: 0.7 });
+  }
+  void animate(sheet, { opacity: [0, 1] }, { duration: 0.85 });
 }

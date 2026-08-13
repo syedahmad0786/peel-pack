@@ -18,35 +18,114 @@ body {
   text-align: center;
 }
 
+.studio-grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+.studio-vignette {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background: radial-gradient(ellipse at 50% 30%, transparent 50%, rgba(255, 77, 141, 0.16) 100%);
+}
+
+header, section, footer {
+  position: relative;
+  z-index: 2;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.mark {
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  filter: drop-shadow(3px 3px 0 var(--yellow));
+}
+
 h1 {
   font-size: clamp(42px, 9vw, 76px);
   margin: 0;
   transform: rotate(-2deg);
   color: var(--pink);
   text-shadow: 3px 3px 0 var(--yellow);
+  letter-spacing: -0.03em;
 }
 
 .kicker {
-  letter-spacing: 0.16em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   font-size: 12px;
+}
+
+header p:last-child {
+  max-width: 28rem;
+  margin: 10px auto 0;
+  font-family: "Patrick Hand", cursive;
+  font-size: 1.2rem;
 }
 
 .label {
   font-family: "Patrick Hand", cursive;
   font-size: 22px;
   margin: 28px 0 10px;
+  letter-spacing: 0.02em;
+}
+
+.ticket-stage {
+  perspective: 900px;
+  width: min(640px, 94vw);
+  margin: 0 auto;
 }
 
 .ticket {
+  --rx: 0deg;
+  --ry: 0deg;
+  --z: 0px;
   position: relative;
-  width: min(640px, 94vw);
+  width: 100%;
   height: 200px;
-  margin: 0 auto;
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 8px 8px 0 var(--ink);
   border: 3px solid var(--ink);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 10px, rgba(26, 18, 48, 0.06) 10px 12px),
+    #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    8px 8px 0 var(--ink),
+    12px 16px 28px rgba(26, 18, 48, 0.18);
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(var(--z));
+  transform-style: preserve-3d;
+  transition: transform 0.16s ease;
+}
+
+.ticket:hover {
+  --z: 12px;
+}
+
+.ticket::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 18px;
+  background: radial-gradient(circle at 0 10px, transparent 7px, var(--ink) 8px) 0 0 / 18px 20px;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.18;
 }
 
 .prize {
@@ -54,7 +133,9 @@ h1 {
   inset: 0;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, var(--yellow), #ffd1e8);
+  background:
+    radial-gradient(circle at 20% 20%, #fff 0, transparent 36%),
+    linear-gradient(135deg, var(--yellow), #ffd1e8);
   font-size: clamp(22px, 4vw, 32px);
   padding: 18px;
   font-family: "Patrick Hand", cursive;
@@ -76,24 +157,49 @@ button {
   background: var(--blue);
   border: 3px solid var(--ink);
   box-shadow: 4px 4px 0 var(--ink);
+  min-height: 44px;
   padding: 10px 16px;
   cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
 .sheet {
+  --rx: 0deg;
+  --ry: 0deg;
+  --z: 0px;
   width: min(720px, 94vw);
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 16px;
-  background: #fff;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 23px, rgba(26, 18, 48, 0.04) 23px 24px),
+    #fff;
   border: 3px dashed var(--ink);
   border-radius: 24px;
   padding: 18px;
+  perspective: 800px;
+  box-shadow:
+    10px 12px 0 var(--ink),
+    14px 18px 30px rgba(26, 18, 48, 0.16);
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(var(--z));
+  transform-style: preserve-3d;
+  transition: transform 0.16s ease;
 }
 
 .sticker {
   aspect-ratio: 1;
+  min-height: 44px;
   border-radius: 28px 28px 18px 18px;
   border: 3px solid var(--ink);
   display: grid;
@@ -103,8 +209,16 @@ button {
   font-size: 18px;
   cursor: pointer;
   transform-origin: top center;
-  transition: transform 0.7s cubic-bezier(0.2, 1.4, 0.3, 1);
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 1.4, 0.3, 1), box-shadow 0.2s ease;
   user-select: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    4px 8px 0 rgba(26, 18, 48, 0.12);
+}
+
+.sticker:hover:not(.peeled) {
+  transform: translateY(-6px) rotate(-2deg);
 }
 
 .sticker.peeled {
@@ -126,4 +240,33 @@ button {
   margin-top: 40px;
   font-size: 12px;
 }
-.webring a { color: var(--ink); }
+.webring a {
+  color: var(--ink);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket,
+  .sheet,
+  .sticker,
+  button {
+    transition: none;
+  }
+  .ticket,
+  .ticket:hover,
+  .sheet {
+    --rx: 0deg;
+    --ry: 0deg;
+    --z: 0px;
+    transform: none;
+  }
+  .sticker:hover:not(.peeled) {
+    transform: none;
+  }
+  .sticker.peeled {
+    transform: none;
+    opacity: 0.35;
+  }
+}
